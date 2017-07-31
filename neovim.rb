@@ -15,14 +15,27 @@ package 'python-dev'
 package 'python-pip'
 package 'python3-dev'
 package 'python3-pip'
+package 'xclip'
+package 'xsel'
 
-git "/home/#{USERNAME}/.config/nvim" do
-  repository 'http://github.com/mitsuchie/config.nvim.git'
+# ------------------------------------------------------------------------------
+# get config files from github
+# ------------------------------------------------------------------------------
+unless File.exist? "/home/#{USERNAME}/.config/nvim"
+  git "/home/#{USERNAME}/.config/nvim" do
+    repository 'http://github.com/mitsuchie/config.nvim.git'
+  end
+
+  execute "chown -R #{USERNAME} /home/#{USERNAME}/.config/nvim"
+  execute "chgrp -R #{USERNAME} /home/#{USERNAME}/.config/nvim"
+
+  execute("/bin/bash /home/#{USERNAME}/.config/nvim/dein.sh") { user USERNAME }
+  execute('nvim -c "call dein#install()" -c "quit"') { user USERNAME }
 end
 
-execute "chown -R #{USERNAME} /home/#{USERNAME}/.config/nvim"
-execute "chgrp -R #{USERNAME} /home/#{USERNAME}/.config/nvim"
-
-execute("/bin/bash /home/#{USERNAME}/.config/nvim/dein.sh") { user USERNAME }
-execute('nvim -c "call dein#install()" -c "quit"') { user USERNAME }
-
+# ------------------------------------------------------------------------------
+# interface
+# ------------------------------------------------------------------------------
+execute('gem install neovim')
+execute('pip install neovim')
+execute('pip3 install neovim')
