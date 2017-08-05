@@ -13,6 +13,7 @@ execute 'apt-get update  -y'
 execute 'apt-get upgrade -y'
 
 package 'git'
+package 'tmux'
 
 # ------------------------------------------------------------------------------
 # recipe
